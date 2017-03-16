@@ -1,0 +1,117 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "接口文档",
+        "description": "点击右上角`Authorize`切换token\n"
+    },
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data",
+        "text/plain"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "xauth": {
+            "type": "apiKey",
+            "name": "access_token",
+            "in": "query"
+        }
+    },
+    "security": [
+        {
+            "xauth": []
+        }
+    ],
+    "paths": {
+        "/test/get": {
+            "get": {
+                "summary": "测试get",
+                "tags": [
+                    "test"
+                ]
+            }
+        },
+        "/test/post/{id}": {
+            "post": {
+                "summary": "测试post",
+                "tags": [
+                    "test"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "path param",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "title",
+                        "description": "query param",
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/main.TestBody"
+                        },
+                        "type": null
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/main.TestData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        ".map": {
+            "type": "object"
+        },
+        "main.TestBody": {
+            "properties": {
+                "name": {
+                    "description": "名字",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "main.TestData": {
+            "properties": {
+                "id": {
+                    "description": "id",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名字",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "tags": [
+        {
+            "name": "test",
+            "description": "测试"
+        }
+    ]
+}
