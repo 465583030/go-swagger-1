@@ -1,0 +1,6 @@
+
+//{{ .Type }}
+type Entity struct{
+{{range $k,$v := .Properties  }}{{$k}} {{$v.type}} //{{$v.description}}
+{{end}}
+}
