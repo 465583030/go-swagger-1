@@ -1,5 +1,34 @@
 # go-swagger
 
+``` bash
+├── api # swagger 文件夹
+│   └── swagger.json
+├── core # swagger生成器核心
+│   ├── definition.go
+│   ├── info.go
+│   ├── method.go
+│   ├── parameter.go
+│   ├── path.go
+│   ├── response.go
+│   ├── router.go
+│   ├── security.go
+│   ├── swagger.go
+│   ├── swagger_test.go
+│   └── tag.go
+├── gin # swagger 对 gin 的封装
+│   └── router.go
+├── main.go # demo
+└── swaggen # swagger.json 生成代码项目
+    ├── README.md
+    ├── base.go
+    ├── entity.go
+    ├── service.go
+    ├── swaggen.go
+    └── tmpl # golang template Demo
+```
+
+## Quick Start
+
 ```
 mkdir -p $GOPATH/src/github.com/inu1255
 cd $GOPATH/src/github.com/inu1255
