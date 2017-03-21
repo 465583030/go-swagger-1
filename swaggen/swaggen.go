@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	tmplDir    = flag.String("d", "tmpl", "template director")
+	tmplDir    = flag.String("t", "tmpl", "template director")
 	entityDir  = flag.String("e", "", "entity director")
 	serviceDir = flag.String("s", "service", "service director")
 	ext        = flag.String("ext", "js", "export file ext")
