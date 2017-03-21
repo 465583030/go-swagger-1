@@ -1,0 +1,14 @@
+import Model from './model.js'
+
+function {{ .CamelName }}() {
+}
+{{ .CamelName }}.prototype = new Model("{{ .HungarianName }}")
+{{ range $i,$method := .Methods }}{{if $method.HasBody }}
+{{template "entity.tmpl" $method.GetBody }}{{end}}
+// {{$method.Summary}}
+/* {{$method.Description}} */
+{{ $.CamelName }}.prototype.{{$method.CamelName}} = function({{ range $i,$param := $method.Params }}{{if ne $i 0}},{{end}}{{$param.Name}}{{end}}{{if $method.IsPost}}{{if gt (len $method.Params) 0}},{{end}}data{{end}}) {
+    return this.request("{{$method.Uri `"+` `+"` `"+` `+"` }}"{{if $method.IsPost}},data{{end}})
+}
+{{ end }}
+export default new {{ .CamelName }}()

@@ -56,13 +56,13 @@ func (this *SwagRouter) Info(info ...string) {
 }
 
 func (this *SwagRouter) QueryParam(name, desc string) *Param {
-	return &Param{"query", name, desc, "string", false, "", false}
+	return &Param{"query", name, desc, "string", false, "", false, nil}
 }
 
 func (this *SwagRouter) PathParam(name, desc string) *Param {
-	return &Param{"path", name, desc, "string", true, "", false}
+	return &Param{"path", name, desc, "string", true, "", false, nil}
 }
 
 func (this *SwagRouter) FileParam(name, desc string) *Param {
-	return &Param{"formData", name, desc, "file", false, "form", true}
+	return &Param{"formData", name, desc, "file", false, "form", true, nil}
 }

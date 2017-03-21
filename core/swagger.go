@@ -37,7 +37,7 @@ func (this *Swagger) AddPath(basePkg, route, ms, summary, desc string, params []
 	}
 	if params != nil {
 		count := len(params)
-		method.Parameters = make([]interface{}, count, count+1)
+		method.Parameters = make([]*Param, count, count+1)
 		for i := 0; i < count; i++ {
 			method.Parameters[i] = params[i]
 		}
@@ -67,11 +67,13 @@ func (this *Swagger) AddTag(tag string, summary ...string) {
 
 func (this *Swagger) methodBody(method *Method, v interface{}) {
 	schema := this.Schema(reflect.ValueOf(v))
-	param := make(map[string]interface{})
-	param["in"] = "body"
-	param["name"] = "body"
-	param["type"] = schema["type"]
-	param["schema"] = schema
+	param := new(Param)
+	param.In = "body"
+	param.Name = "body"
+	if v, ok := schema["type"]; ok {
+		param.Type = v.(string)
+	}
+	param.Schema = schema
 	method.Parameters = append(method.Parameters, param)
 }
 

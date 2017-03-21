@@ -8,7 +8,7 @@ type Method struct {
 	Summary     string               `json:"summary,omitempty"`
 	Description string               `json:"description,omitempty"`
 	Tags        []string             `json:"tags,omitempty"`
-	Parameters  []interface{}        `json:"parameters,omitempty"`
+	Parameters  []*Param             `json:"parameters,omitempty"`
 	Responses   map[string]*Response `json:"responses,omitempty"`
 }
 
@@ -17,7 +17,7 @@ func NewMethod(summary, desc string) *Method {
 		Summary:     summary,
 		Description: desc,
 		Tags:        make([]string, 0, 1),
-		Parameters:  make([]interface{}, 0),
+		Parameters:  make([]*Param, 0),
 	}
 	// method.SetResponse(MapSchema)
 	return method
