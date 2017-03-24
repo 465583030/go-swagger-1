@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"runtime"
 	"strings"
 	"text/template"
 
@@ -20,8 +21,10 @@ var (
 	serviceDir = flag.String("s", "service", "service director")
 	ext        = flag.String("ext", "js", "export file ext")
 	url        = flag.String("u", "", "the path or url for swagger.json")
+	_service   = flag.String("p", "", "specific which service to generate")
 	swag       *core.Swagger
 	tpl        *template.Template
+	_path      string
 )
 
 func Generate(url string) (err error) {
@@ -55,14 +58,20 @@ func Generate(url string) (err error) {
 		}
 	}
 	for _, item := range services {
-		GenerateService(item)
+		if *_service == "" {
+			log.Println(item.Name)
+			GenerateService(item)
+		} else if *_service == item.GetName() {
+			log.Println(item.Name)
+			GenerateService(item)
+		}
 	}
 	return nil
 }
 
 func GenerateEntity(data *Entity) {
 	name := data.HungarianName()
-	wr, err := os.OpenFile(*entityDir+"/"+name+"."+*ext, os.O_CREATE|os.O_RDWR, 0664)
+	wr, err := os.OpenFile(*entityDir+"/"+name+"."+*ext, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
 	if err != nil {
 		log.Println(err)
 		return
@@ -76,7 +85,7 @@ func GenerateEntity(data *Entity) {
 
 func GenerateService(data *Service) {
 	name := data.HungarianName()
-	wr, err := os.OpenFile(*serviceDir+"/"+name+"."+*ext, os.O_CREATE|os.O_RDWR, 0664)
+	wr, err := os.OpenFile(*serviceDir+"/"+name+"."+*ext, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0664)
 	if err != nil {
 		log.Println(err)
 		return
@@ -89,6 +98,10 @@ func GenerateService(data *Service) {
 }
 
 func main() {
+	_, file, _, _ := runtime.Caller(0)
+	if index := strings.LastIndex(file, "/"); index > 0 {
+		_path = file[:index]
+	}
 	flag.Parse()
 	log.SetFlags(log.Lshortfile)
 	os.Mkdir(*entityDir, 0775)
@@ -97,6 +110,12 @@ func main() {
 	tpl, err = template.ParseFiles(*tmplDir+"/entity.tmpl", *tmplDir+"/service.tmpl")
 	if err != nil {
 		log.Println(err)
+		log.Println("try path:", _path+"/"+*tmplDir)
+		tpl, err = template.ParseFiles(_path+"/"+*tmplDir+"/entity.tmpl", _path+"/"+*tmplDir+"/service.tmpl")
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 	err = Generate(*url)
 	if err != nil {

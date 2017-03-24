@@ -33,10 +33,12 @@ type Method struct {
 
 func (this *Method) HungarianName() string {
 	path := path_reg.ReplaceAllString(this.Path, "")
+	path = strings.Replace(path, "-", "_", -1)
 	return strings.Replace(path, "/", "_", -1)
 }
 func (this *Method) CamelName() string {
 	path := path_reg.ReplaceAllString(this.Path, "")
+	path = strings.Replace(path, "-", "/", -1)
 	return path_camel_reg.ReplaceAllStringFunc(path, func(src string) string {
 		return strings.ToUpper(src[1:])
 	})
