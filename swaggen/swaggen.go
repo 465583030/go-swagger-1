@@ -57,11 +57,12 @@ func Generate(url string) (err error) {
 			AddMethod(path, typ, item)
 		}
 	}
+	ss := "," + *_service + ","
 	for _, item := range services {
 		if *_service == "" {
 			log.Println(item.Name)
 			GenerateService(item)
-		} else if *_service == item.GetName() {
+		} else if strings.Contains(ss, ","+item.GetName()+",") {
 			log.Println(item.Name)
 			GenerateService(item)
 		}
