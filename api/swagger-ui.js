@@ -22456,11 +22456,11 @@ SwaggerUi.Views.AuthView = Backbone.View.extend({
         this.authsCollectionView = new SwaggerUi.Views.AuthsCollectionView({data: opts.data});
 
         this.$el.html(this.tpls.main({
-            isLogout: this.authsCollectionView.collection.isAuthorized(),
-            isAuthorized: this.authsCollectionView.collection.isPartiallyAuthorized()
+            isLogout: false,
+            isAuthorized: false
         }));
         this.$innerEl = this.$(this.selectors.innerEl);
-        this.isLogout = this.authsCollectionView.collection.isPartiallyAuthorized();
+        this.isLogout = false;
     },
 
     render: function () {

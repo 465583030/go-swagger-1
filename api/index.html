@@ -33,6 +33,13 @@
   <!-- <script src='lang/en.js' type='text/javascript'></script> -->
 
   <script type="text/javascript">
+    function setAuth(access_token){
+      if(access_token){
+        localStorage.access_token = access_token
+        var auth = new SwaggerClient.ApiKeyAuthorization("access_token",access_token, "query")
+        window.swaggerUi.api.clientAuthorizations.add("xauth", auth);
+      }
+    }
     $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
@@ -79,10 +86,7 @@
       });
 
       window.swaggerUi.load();
-      if(localStorage.access_token){
-        var auth = new SwaggerClient.ApiKeyAuthorization("access_token",localStorage.access_token, "query")
-        window.swaggerUi.api.clientAuthorizations.add("xauth", auth);
-      }
+      setAuth(localStorage.access_token)
       function log() {
         if ('console' in window) {
           console.log.apply(console, arguments);

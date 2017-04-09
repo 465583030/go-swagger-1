@@ -21,6 +21,7 @@ type SwagRouter struct {
 
 func (this *SwagRouter) SetEngine(engine *Swagger) {
 	this.engine = engine
+	this.params = make([]*Param, 0)
 }
 
 func (this *SwagRouter) AddPath(basePath, route, ms string) {
@@ -28,7 +29,7 @@ func (this *SwagRouter) AddPath(basePath, route, ms string) {
 }
 
 func (this *SwagRouter) Clear() {
-	this.params = nil
+	this.params = make([]*Param, 0)
 	this.body = nil
 	this.data = nil
 	this.summary = ""
@@ -52,17 +53,23 @@ func (this *SwagRouter) Info(info ...string) {
 		return
 	}
 	this.summary = info[0]
-	this.desc = strings.Join(info[1:], "\n")
+	this.desc = strings.Join(info[1:], "<br/>\n")
 }
 
 func (this *SwagRouter) QueryParam(name, desc string) *Param {
-	return &Param{"query", name, desc, "string", false, "", false, nil}
+	param := &Param{"query", name, desc, "string", false, "", false, nil}
+	this.params = append(this.params, param)
+	return param
 }
 
 func (this *SwagRouter) PathParam(name, desc string) *Param {
-	return &Param{"path", name, desc, "string", true, "", false, nil}
+	param := &Param{"path", name, desc, "string", true, "", false, nil}
+	this.params = append(this.params, param)
+	return param
 }
 
 func (this *SwagRouter) FileParam(name, desc string) *Param {
-	return &Param{"formData", name, desc, "file", false, "form", true, nil}
+	param := &Param{"formData", name, desc, "file", false, "form", true, nil}
+	this.params = append(this.params, param)
+	return param
 }

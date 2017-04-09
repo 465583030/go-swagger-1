@@ -70,9 +70,6 @@ func (this *Swagger) methodBody(method *Method, v interface{}) {
 	param := new(Param)
 	param.In = "body"
 	param.Name = "body"
-	if v, ok := schema["type"]; ok {
-		param.Type = v.(string)
-	}
 	param.Schema = schema
 	method.Parameters = append(method.Parameters, param)
 }
@@ -95,7 +92,11 @@ func (this *Swagger) Schema(v reflect.Value) map[string]interface{} {
 		} else {
 			schema["$ref"] = this.Define(v)
 		}
-	case reflect.Interface, reflect.Ptr:
+	case reflect.Interface:
+		if !v.IsNil() {
+			schema = this.Schema(v.Elem())
+		}
+	case reflect.Ptr:
 		if v.IsNil() {
 			schema = this.Schema(reflect.New(v.Type().Elem()).Elem())
 		} else {
