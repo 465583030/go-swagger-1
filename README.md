@@ -35,7 +35,7 @@ go run main.go
 visit [http://localhost:8080/api](http://localhost:8080/api)
 
 you will get this
-![](./image/swagger-demo.png)
+![](./screenshot/swagger.png)
 
 ### Demo
 ``` go
