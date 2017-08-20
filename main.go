@@ -17,7 +17,12 @@ type TestData struct {
 
 func main() {
 	app := swaggin.New()
-	app.Info("测试post").Body(new(TestBody)).Data(new(TestData)).PathParam("id", "path param").QueryParam("title", "query param").POST("/post/:id", func(c *gin.Context) {
+	app.Info("测试post")
+	app.Body(new(TestBody))
+	app.Data(new(TestData))
+	app.PathParam("id", "path param")
+	app.QueryParam("title", "query param")
+	app.POST("/post/:id", func(c *gin.Context) {
 		body := new(TestBody)
 		if err := c.BindJSON(&body); err != nil {
 			c.JSON(400, gin.H{"code": 1, "msg": err.Error()})
@@ -32,5 +37,6 @@ func main() {
 	app.Info("测试get").GET("/get", func(c *gin.Context) {
 		c.JSON(200, "hello world!")
 	})
+	app.Swagger("/api")
 	app.Run()
 }

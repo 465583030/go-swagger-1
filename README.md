@@ -1,5 +1,7 @@
 # go-swagger
 
+## 项目结构
+
 ``` bash
 ├── api # swagger 文件夹
 │   └── swagger.json
@@ -15,16 +17,10 @@
 │   ├── swagger.go
 │   ├── swagger_test.go
 │   └── tag.go
-├── gin # swagger 对 gin 的封装
-│   └── router.go
-├── main.go # demo
-└── swaggen # swagger.json 生成代码项目
-    ├── README.md
-    ├── base.go
-    ├── entity.go
-    ├── service.go
-    ├── swaggen.go
-    └── tmpl # golang template Demo
+├── swagger # swagger 对 gin 的封装
+│   ├── engine.go
+│   └── group.go
+└── main.go # demo
 ```
 
 ## Quick Start
@@ -47,7 +43,7 @@ package main
 
 import (
     "github.com/gin-gonic/gin"
-    swaggin "github.com/inu1255/go-swagger/gin"
+    "github.com/inu1255/go-swagger/swaggin"
 )
 
 type TestBody struct {
@@ -61,39 +57,33 @@ type TestData struct {
 }
 
 func main() {
-    app := gin.Default()
-    test := app.Group("test")
-    g := swaggin.NewRouter(test, "测试")
-    {// post 接口
-        g.Info("测试post").Body(
-            new(TestBody),
-        ).Data(
-            new(TestData),
-        ).Params(
-            g.PathParam("id", "path param"),
-            g.QueryParam("title", "query param"),
-        ).POST("/post/:id", func(c *gin.Context) {
-            body := new(TestBody)
-            if err := c.BindJSON(&body); err != nil {
-                c.JSON(400, gin.H{"code": 1, "msg": err.Error()})
-                return
-            }
-            data := new(TestData)
-            data.Id = c.Param("id")
-            data.Title = c.Query("title")
-            data.Name = body.Name
-            c.JSON(200, data)
-        })
-    }
-    {// get 接口
-        g.Info("测试get").GET("/get", func(c *gin.Context) {
-            c.JSON(200, "hello world!")
-        })
-    }
-    swaggin.Swag.WriteJson("api/swagger.json")
-    app.Static("api", "api")
+    app := swaggin.New()
+    app.Info("测试post")
+    app.Body(new(TestBody))
+    app.Data(new(TestData))
+    app.PathParam("id", "path param")
+    app.QueryParam("title", "query param")
+    app.POST("/post/:id", func(c *gin.Context) {
+        body := new(TestBody)
+        if err := c.BindJSON(&body); err != nil {
+            c.JSON(400, gin.H{"code": 1, "msg": err.Error()})
+            return
+        }
+        data := new(TestData)
+        data.Id = c.Param("id")
+        data.Title = c.Query("title")
+        data.Name = body.Name
+        c.JSON(200, data)
+    })
+    app.Info("测试get").GET("/get", func(c *gin.Context) {
+        c.JSON(200, "hello world!")
+    })
+    app.Swagger("/api")
     app.Run()
 }
 ```
 
-相关项目: [通过swagger.json生成代码](https://github.com/inu1255/go-swagger/tree/master/swaggen)
+相关项目:  
+
+-  通过swagger.json生成代码 [swaggen](https://github.com/inu1255/go-swagger/tree/master/swaggen)
+-  轻松构建restful接口 [gev](https://github.com/inu1255/gev)

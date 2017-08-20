@@ -30,20 +30,14 @@
         }
     ],
     "paths": {
-        "/test/get": {
+        "/get": {
             "get": {
-                "summary": "测试get",
-                "tags": [
-                    "test"
-                ]
+                "summary": "测试get"
             }
         },
-        "/test/post/{id}": {
+        "/post/{id}": {
             "post": {
                 "summary": "测试post",
-                "tags": [
-                    "test"
-                ],
                 "parameters": [
                     {
                         "in": "path",
@@ -63,8 +57,7 @@
                         "name": "body",
                         "schema": {
                             "$ref": "#/definitions/main.TestBody"
-                        },
-                        "type": null
+                        }
                     }
                 ],
                 "responses": {
@@ -107,11 +100,5 @@
             },
             "type": "object"
         }
-    },
-    "tags": [
-        {
-            "name": "test",
-            "description": "测试"
-        }
-    ]
+    }
 }

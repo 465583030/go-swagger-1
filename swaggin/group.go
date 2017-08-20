@@ -6,6 +6,13 @@ import (
 )
 
 type IRouter interface {
+	DELETE(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
+	GET(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
+	HEAD(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
+	OPTIONS(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
+	PATCH(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
+	POST(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
+	PUT(relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
 	Handle(httpMethod string, relativePath string, handlers ...gin.HandlerFunc) gin.IRoutes
 	Group(string, ...gin.HandlerFunc) *RouterGroup
 	Body(body interface{}) IRouter
