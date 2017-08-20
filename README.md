@@ -1,6 +1,6 @@
 # go-swagger
 
-## 项目结构
+## project tree
 
 ``` bash
 ├── api # swagger 文件夹
@@ -75,7 +75,7 @@ func main() {
         data.Name = body.Name
         c.JSON(200, data)
     })
-    app.Info("测试get").GET("/get", func(c *gin.Context) {
+    app.Info("test get").GET("/get", func(c *gin.Context) {
         c.JSON(200, "hello world!")
     })
     app.Swagger("/api")
@@ -85,5 +85,5 @@ func main() {
 
 相关项目:  
 
--  通过swagger.json生成代码 [swaggen](https://github.com/inu1255/go-swagger/tree/master/swaggen)
 -  轻松构建restful接口 [gev](https://github.com/inu1255/gev)
+-  通过swagger.json生成代码 [swaggen](https://github.com/inu1255/go-swagger/tree/master/swaggen)
