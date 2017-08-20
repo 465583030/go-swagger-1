@@ -49,7 +49,7 @@ func (this *Swagger) AddPath(basePkg, route, ms, summary, desc string, params []
 		method.SetResponse(this.Schema(reflect.ValueOf(data)))
 	}
 	route = reg_route.ReplaceAllString(route, "{$1}")
-	ps := basePkg + route
+	ps := strings.Replace(basePkg+route, "//", "/", -1)
 	if path, ok := this.Paths[ps]; ok {
 		path.SetMethod(ms, method)
 	} else {

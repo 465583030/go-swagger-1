@@ -11,7 +11,7 @@ type ISwagRouterBase interface {
 }
 
 type SwagRouter struct {
-	engine  *Swagger
+	*Swagger
 	params  []*Param
 	body    interface{}
 	data    interface{}
@@ -19,13 +19,8 @@ type SwagRouter struct {
 	desc    string
 }
 
-func (this *SwagRouter) SetEngine(engine *Swagger) {
-	this.engine = engine
-	this.params = make([]*Param, 0)
-}
-
 func (this *SwagRouter) AddPath(basePath, route, ms string) {
-	this.engine.AddPath(basePath, route, ms, this.summary, this.desc, this.params, this.body, this.data)
+	this.Swagger.AddPath(basePath, route, ms, this.summary, this.desc, this.params, this.body, this.data)
 }
 
 func (this *SwagRouter) Clear() {
@@ -72,4 +67,11 @@ func (this *SwagRouter) FileParam(name, desc string) *Param {
 	param := &Param{"formData", name, desc, "file", false, "form", true, nil}
 	this.params = append(this.params, param)
 	return param
+}
+
+func NewSwagRouter() *SwagRouter {
+	swag := new(SwagRouter)
+	swag.params = make([]*Param, 0)
+	swag.Swagger = NewSwagger()
+	return swag
 }
