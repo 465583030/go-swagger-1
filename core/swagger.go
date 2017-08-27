@@ -128,8 +128,14 @@ func parseTag(tag string) string {
 // 为一个 definition 定义属性
 func (this *Swagger) defineProperty(define *Definition, v reflect.Value) {
 	switch v.Kind() {
-	case reflect.Interface, reflect.Ptr:
+	case reflect.Interface:
 		this.defineProperty(define, v.Elem())
+	case reflect.Ptr:
+		if v.IsNil() {
+			this.defineProperty(define, reflect.New(v.Type().Elem()).Elem())
+		} else {
+			this.defineProperty(define, v.Elem())
+		}
 	case reflect.Struct:
 		t := v.Type()
 		n := t.NumField()
